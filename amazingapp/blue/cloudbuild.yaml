@@ -33,22 +33,19 @@ steps:
   # Step 2: Authenticate Docker with Artifact Registry
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['auth', 'configure-docker', 'us-central1-docker.pkg.dev']
-      
-   # Step 2.5: Check if go.mod and go.sum exist
-  - name: 'gcr.io/cloud-builders/gcloud'
+
+  # Step 2.5: Ensure Go modules exist  
+  - name: 'golang:1.21'  # Use the correct Go image
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        echo "Checking if go.mod and go.sum exist..."
-        if [[ ! -f /workspace/amazingapp/blue/go.mod ]]; then
-          echo "🚨 ERROR: go.mod is missing!"
-          exit 1
+        cd /workspace/amazingapp/blue
+        if [[ ! -f go.mod ]]; then
+          echo "🚀 Initializing Go module..."
+          go mod init amazingapp
         fi
-        if [[ ! -f /workspace/amazingapp/blue/go.sum ]]; then
-          echo "🚨 ERROR: go.sum is missing!"
-          exit 1
-        fi
+        go mod tidy
 
   # Step 3: Build the Docker image using blue/ as the build context
   - name: 'gcr.io/cloud-builders/docker'
