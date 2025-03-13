@@ -10,7 +10,7 @@
 
 
 # Build Stage
-FROM golang:1.17 AS builder
+FROM golang:1.21 AS builder
 WORKDIR /app
 
 # Copy Go module files and download dependencies
