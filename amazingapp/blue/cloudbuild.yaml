@@ -34,7 +34,7 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['auth', 'configure-docker', 'us-central1-docker.pkg.dev']
 
-  # Step 2.5: Ensure Go module is initialized properly
+  # Step 2.5: Ensure Go module is initialized properly and generates go.sum
   - name: 'golang:1.21'
     entrypoint: 'bash'
     args:
@@ -45,8 +45,11 @@ steps:
           echo "🚀 Initializing Go module..."
           go mod init amazingapp
         fi
-        go mod tidy
-        ls -l go.sum  # Debugging: Ensure go.sum exists
+        echo "✅ Running go mod tidy..."
+        go mod tidy || exit 1
+        touch go.sum  # Ensure go.sum exists
+        echo "✅ go.sum file contents:"
+        cat go.sum || echo "⚠️ go.sum is empty"
 
   # Step 3: Build the Docker image using blue/ as the build context
   - name: 'gcr.io/cloud-builders/docker'
@@ -72,7 +75,6 @@ steps:
 
 images:
   - us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA
-
 
 
 # logbucket: "gs://725837802412-global-cloudbuild-logs"
