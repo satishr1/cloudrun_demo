@@ -1,9 +1,9 @@
-FROM golang:1.13 as builder
+FROM golang:1.17 as builder
 WORKDIR /app
 COPY . ./
-RUN CGO_ENABLED=0 GOOS=linux go build -o server
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o server
 
-FROM alpine:3
+FROM alpine:3.14
 RUN apk add --no-cache ca-certificates
-COPY --from=builder /app/* /
+COPY --from=builder /app/server /
 CMD ["/server"]
