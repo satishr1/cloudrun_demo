@@ -34,8 +34,8 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['auth', 'configure-docker', 'us-central1-docker.pkg.dev']
 
-  # Step 2.5: Ensure Go modules exist  
-  - name: 'golang:1.21'  # Use the correct Go image
+  # Step 2.5: Ensure Go module is initialized properly
+  - name: 'golang:1.21'
     entrypoint: 'bash'
     args:
       - '-c'
@@ -46,15 +46,16 @@ steps:
           go mod init amazingapp
         fi
         go mod tidy
+        ls -l go.sum  # Debugging: Ensure go.sum exists
 
   # Step 3: Build the Docker image using blue/ as the build context
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', '/workspace/amazingapp/blue/Dockerfile', '/workspace/amazingapp/blue']
-  
+
   # Step 4: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA']
-  
+
   # Step 5: Deploy the Docker image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: 
@@ -71,6 +72,7 @@ steps:
 
 images:
   - us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA
+
 
 
 # logbucket: "gs://725837802412-global-cloudbuild-logs"
