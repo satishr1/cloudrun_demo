@@ -21,7 +21,7 @@
 
 
 steps:
-  #Step 1: Debugging - List all the files
+  # Step 1: Debugging - List all the files
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args: 
@@ -30,19 +30,19 @@ steps:
         echo "Checking workspace files...."
         ls -lR /workspace
 
-  #Step 2: Authenticate Docker with Artifact Registry
+  # Step 2: Authenticate Docker with Artifact Registry
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['auth', 'configure-docker', 'us-central1-docker.pkg.dev']
       
-  #Step 3: Build the Docker image using blue/ as the build context
+  # Step 3: Build the Docker image using blue/ as the build context
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', '/workspace/amazingapp/blue', 'amazingapp/blue']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', '/workspace/amazingapp/blue/Dockerfile', '/workspace/amazingapp/blue']
   
-  #Step 4: Push the Docker image to Artifact Registry
+  # Step 4: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA']
   
-  #Step 5: Deploy the Docker image to Cloud Run
+  # Step 5: Deploy the Docker image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: 
       - 'run'
@@ -57,7 +57,7 @@ steps:
       - '--allow-unauthenticated'
 
 images:
-  - us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA  
+  - us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA
 
 
 # logbucket: "gs://725837802412-global-cloudbuild-logs"
