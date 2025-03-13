@@ -34,6 +34,22 @@ steps:
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['auth', 'configure-docker', 'us-central1-docker.pkg.dev']
       
+   # Step 2.5: Check if go.mod and go.sum exist
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        echo "Checking if go.mod and go.sum exist..."
+        if [[ ! -f /workspace/amazingapp/blue/go.mod ]]; then
+          echo "🚨 ERROR: go.mod is missing!"
+          exit 1
+        fi
+        if [[ ! -f /workspace/amazingapp/blue/go.sum ]]; then
+          echo "🚨 ERROR: go.sum is missing!"
+          exit 1
+        fi
+
   # Step 3: Build the Docker image using blue/ as the build context
   - name: 'gcr.io/cloud-builders/docker'
     args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', '/workspace/amazingapp/blue/Dockerfile', '/workspace/amazingapp/blue']
