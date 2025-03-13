@@ -32,15 +32,15 @@ steps:
 
   #Step 2: Authenticate Docker with Artifact Registry
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['auth', 'configure-docker', 'us-east1-docker.pkg.dev']
+    args: ['auth', 'configure-docker', 'us-central1-docker.pkg.dev']
       
   #Step 3: Build the Docker image using blue/ as the build context
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-east1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', 'amazingapp/blue/dockerfile', 'amazingapp/blue']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', 'amazingapp/blue/dockerfile', 'amazingapp/blue']
   
   #Step 4: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-east1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA']
+    args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA']
   
   #Step 5: Deploy the Docker image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -49,7 +49,7 @@ steps:
       - 'deploy'
       - 'amazingapp'
       - '--image'
-      - 'us-east1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA'
+      - 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA'
       - '--region'
       - 'us-east1'
       - '--platform'
@@ -57,7 +57,7 @@ steps:
       - '--allow-unauthenticated'
 
 images:
-  - us-east1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA  
+  - us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA  
 
 
 # logbucket: "gs://725837802412-global-cloudbuild-logs"
