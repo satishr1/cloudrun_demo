@@ -36,7 +36,7 @@ steps:
       
   #Step 3: Build the Docker image using blue/ as the build context
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', '/amazingapp/blue/dockerfile', 'amazingapp/blue']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', '/workspace/amazingapp/blue', 'amazingapp/blue']
   
   #Step 4: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
