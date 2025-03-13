@@ -52,18 +52,19 @@ steps:
         cat go.sum || echo "⚠️ go.sum is empty"
 
   # Step 3: Build the Docker image using blue/ as the build context
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', '/workspace/amazingapp/blue/Dockerfile', '/workspace/amazingapp/blue']
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', '/workspace/amazingapp/blue/Dockerfile', '/workspace/amazingapp/blue']
+    args: ['build', '-t', 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/cloudrun-demo/amazingapp:$COMMIT_SHA', '-f', '/workspace/amazingapp/blue/Dockerfile', '/workspace/amazingapp/blue']
+
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   args: ['build', '-t', 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/amazingapp-repo/amazingapp:$COMMIT_SHA', '-f', '/workspace/amazingapp/blue/Dockerfile', '/workspace/amazingapp/blue']
 
 
   # Step 4: Push the Docker image to Artifact Registry
-  # - name: 'gcr.io/cloud-builders/docker'
-  #   args: ['push', 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/cloudrun-demo:$COMMIT_SHA']
-  
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/amazingapp-repo/amazingapp:$COMMIT_SHA']
+    args: ['push', 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/cloudrun-demo/amazingapp:$COMMIT_SHA']
+  
+  # - name: 'gcr.io/cloud-builders/docker'
+  #   args: ['push', 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/amazingapp-repo/amazingapp:$COMMIT_SHA']
 
   # Step 5: Deploy the Docker image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
