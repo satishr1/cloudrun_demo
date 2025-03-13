@@ -84,4 +84,4 @@ images:
   - us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA
 
 
-# logbucket: "gs://725837802412-global-cloudbuild-logs"
+# logbucket: "gs://725837802412-global-cloudbuild-logs"#
