@@ -57,7 +57,7 @@ steps:
 
   # Step 4: Push the Docker image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/cloudrun-demo/amazingapp:$COMMIT_SHA']
+    args: ['push', 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/cloudrun-demo:$COMMIT_SHA']
 
   # Step 5: Deploy the Docker image to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
@@ -66,7 +66,7 @@ steps:
       - 'deploy'
       - 'amazingapp'
       - '--image'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA'
+      - 'us-central1-docker.pkg.dev/integrated-bit-451304-m9/cloudrun-demo:$COMMIT_SHA
       - '--region'
       - 'us-east1'
       - '--platform'
@@ -74,7 +74,7 @@ steps:
       - '--allow-unauthenticated'
 
 images:
-  - us-central1-docker.pkg.dev/$PROJECT_ID/amazingapp-repo/amazingapp:$COMMIT_SHA
+  - us-central1-docker.pkg.dev/integrated-bit-451304-m9/cloudrun-demo:$COMMIT_SHA
 
 
 # logbucket: "gs://725837802412-global-cloudbuild-logs"
